@@ -4,6 +4,6 @@ namespace BankKata
 {
     public interface ICalendar
     {
-        DateTime GetToday();
+        DateTime GetNow();
     }
 }

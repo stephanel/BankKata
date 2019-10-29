@@ -2,7 +2,7 @@
 
 namespace BankKata
 {
-    internal class Transaction
+    public class Transaction
     {
         public Transaction(int amount, DateTime date)
         {

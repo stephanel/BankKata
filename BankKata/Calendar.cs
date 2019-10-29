@@ -4,7 +4,7 @@ namespace BankKata
 {
     public class Calendar : ICalendar
     {
-        public DateTime GetToday()
+        public DateTime GetNow()
         {
             throw new NotImplementedException();
         }

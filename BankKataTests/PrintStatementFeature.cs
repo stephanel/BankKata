@@ -20,11 +20,12 @@ namespace BankKataTests
             // Given
             Mock<ICalendar> calendarMock = new Mock<ICalendar>();
             Mock<IStatementPrinter> consoleMock = new Mock<IStatementPrinter>();
+            ITransactionRepository accountRepository = new TransactionRepository();
 
-            IAccount account = new Account(consoleMock.Object, calendarMock.Object);
+            IAccount account = new Account(consoleMock.Object, calendarMock.Object, accountRepository);
 
             var calendarSetupSequence = calendarMock
-                .SetupSequence(_ => _.GetToday());
+                .SetupSequence(_ => _.GetNow());
 
             calendarSetupSequence.Returns(new DateTime(2012, 1, 10));
             account.Deposit(1000);

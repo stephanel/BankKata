@@ -7,31 +7,29 @@ namespace BankKata
     {
         private readonly IStatementPrinter _console;
         private readonly ICalendar _calendar;
-
-        private readonly List<Transaction> _transactions;
+        private readonly ITransactionRepository _accountRepository;
 
         const string PrintStatementHeader = "Date || Amount || Balance";
 
-        public Account(IStatementPrinter console, ICalendar calendar)
+        public Account(IStatementPrinter console, ICalendar calendar, ITransactionRepository accountRepository)
         {
             _calendar = calendar;
             _console = console;
-
-            _transactions = new List<Transaction>();
+            _accountRepository = accountRepository;
         }
 
         public void Deposit(int amount)
         {
-            var deposit = new Transaction(amount, _calendar.GetToday());
+            var deposit = new Transaction(amount, _calendar.GetNow());
 
-            _transactions.Add(deposit);
+            _accountRepository.AddTransaction(deposit);
         }
 
         public void Withdraw(int amount)
         {
-            var withdrawal = new Transaction(-amount, _calendar.GetToday());
+            var withdrawal = new Transaction(-amount, _calendar.GetNow());
 
-            _transactions.Add(withdrawal);
+            _accountRepository.AddTransaction(withdrawal);
         }
 
         public void PrintStatement()
@@ -47,11 +45,13 @@ namespace BankKata
 
         void PrintTransactions()
         {
-            _transactions.Reverse();
+            var transactions = _accountRepository.GetTransactions();
 
-            foreach (var transaction in _transactions)
+            transactions.Reverse();
+
+            foreach (var transaction in transactions)
             {
-                var balance = _transactions
+                var balance = transactions
                     .Where(x => x.Date <= transaction.Date)
                     .Sum(x => x.Amount);
 
