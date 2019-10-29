@@ -45,18 +45,13 @@ namespace BankKata
 
         void PrintTransactions()
         {
-            var transactions = _accountRepository.GetTransactions();
+            var outputs = _accountRepository
+                .GetTransactions()
+                .GetFormattedTransactionsOuputs();
 
-            transactions.Reverse();
-
-            foreach (var transaction in transactions)
+            foreach (var output in outputs)
             {
-                var balance = transactions
-                    .Where(x => x.Date <= transaction.Date)
-                    .Sum(x => x.Amount);
-
-                _console.PrintLine(
-                    $"{transaction.Date.ToShortDateString()} || {transaction.Amount} || {balance}");
+                _console.PrintLine(output);
             }
         }
     }
