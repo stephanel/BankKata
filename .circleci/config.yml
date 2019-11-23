@@ -26,4 +26,4 @@ jobs:
           path: tests/TestResults
       - store_artifacts:
           path: tests/TestResults
-          destination: tests/TestResults
+          destination: tests/TestResults/BankKataTests
