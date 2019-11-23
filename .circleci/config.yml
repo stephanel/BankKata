@@ -1,0 +1,29 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: mcr.microsoft.com/dotnet/core/sdk:3.0
+    steps:
+      - checkout
+      - run:
+          name: Restore solution
+          command: dotnet restore BankKata/
+      - run:
+          name: Build solution
+          command: dotnet build BankKata/
+      - run:
+          name: Run tests 
+          command: dotnet test --no-build --logger "trx" BankKataTests --results-directory:tests/TestResults --collect:"Code Coverage"
+
+      - run:
+          name: test results
+          when: always
+          command: |
+              dotnet tool install -g trx2junit
+              export PATH="$PATH:/root/.dotnet/tools"
+              trx2junit tests/TestResults/*.trx
+      - store_test_results:
+          path: tests/TestResults
+      - store_artifacts:
+          path: tests/TestResults
+          destination: tests/TestResults
