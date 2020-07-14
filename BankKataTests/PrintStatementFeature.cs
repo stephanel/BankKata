@@ -1,6 +1,7 @@
 using BankKata;
 using Moq;
 using System;
+using System.Globalization;
 using Xunit;
 
 namespace BankKataTests
@@ -11,13 +12,15 @@ namespace BankKataTests
         public void PrintStatement()
         {
             //Date || Amount || Balance
-            //145/01/2012 || -2000 || 1500
+            //15/01/2012 || -2000 || 1500
             //14/01/2012 || 1000 || 3500
             //14/01/2012 || -500 || 2500
             //13/01/2012 || 2000 || 3000
             //10/01/2012 || 1000 || 1000
 
             // Given
+            CultureInfo.CurrentCulture = new CultureInfo("fr-FR");
+
             Mock<ICalendar> calendarMock = new Mock<ICalendar>();
             Mock<IStatementPrinter> consoleMock = new Mock<IStatementPrinter>();
             ITransactionRepository accountRepository = new TransactionRepository();
